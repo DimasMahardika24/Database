@@ -1,7 +1,7 @@
 module.exports = {
-  API_KEY: 'ptla_qKEyRhjZscMVVCp6EdFdque6zBLAtDlXkuaCluSkgl2',
-  PANEL_URL: 'https://panel-leveo.panelfast.my.id',
-  EGG_ID: 18,           // ID Egg default (misal Node.js = 1)
-  NEST_ID: 5,          // ID Nest default (misal Software = 1)
-  ALLOCATION_ID: 1     // ID Allocation aktif di lokasi tertentu
+  PANEL_URL: process.env.PANEL_URL,
+  API_KEY: process.env.API_KEY,
+  EGG_ID: process.env.EGG_ID,
+  NEST_ID: process.env.NEST_ID,
+  ALLOCATION_ID: process.env.ALLOCATION_ID
 };
