@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Server</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #05001a;
+      color: #00ffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: radial-gradient(#202040 1px, #05001a 1px);
+      background-size: 20px 20px;
+    }
+    .form-box {
+      background: #0a0a2a;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #00ffff66;
+      width: 320px;
+    }
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-box label {
+      font-size: 14px;
+      display: block;
+      margin-top: 15px;
+    }
+    .form-box input,
+    .form-box select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      background: #1a1a3d;
+      color: #00ffff;
+      border: 1px solid #00ffff;
+      border-radius: 5px;
+    }
+    .form-box button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      background: #00ffff;
+      color: #0a0a2a;
+      border: none;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-box button:hover {
+      background: #00cccc;
+    }
+    #result {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      font-size: 14px;
+      color: #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>CREATE SERVER</h2>
+    <form id="serverForm">
+      <label>Email</label>
+      <input name="email" type="email" required />
+
+      <label>Username</label>
+      <input name="username" type="text" required />
+
+      <label>Password</label>
+      <input name="password" type="password" required />
+
+      <label>RAM</label>
+      <select name="ram" required>
+        <option value="1gb">1 GB</option>
+        <option value="2gb">2 GB</option>
+        <option value="3gb">3 GB</option>
+        <option value="4gb">4 GB</option>
+        <option value="5gb">5 GB</option>
+        <option value="6gb">6 GB</option>
+        <option value="7gb">7 GB</option>
+        <option value="8gb">8 GB</option>
+        <option value="9gb">9 GB</option>
+        <option value="10gb">10 GB</option>
+      </select>
+
+      <button type="submit">🔌 ACTIVATE SERVER</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('serverForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      const resultBox = document.getElementById('result');
+      resultBox.innerText = 'Processing...';
+
+      try {
+        const res = await fetch('/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (result.status === 'success') {
+          resultBox.innerText = `✅ Server berhasil dibuat!\n\n🔐 Username: ${result.username}\n📧 Email: ${result.email}\n🌐 Panel: ${result.panel_url}\n🆔 Server ID: ${result.server_id}`;
+        } else {
+          resultBox.innerText = `❌ Gagal: ${result.message}`;
+        }
+
+      } catch (err) {
+        resultBox.innerText = '❌ Error koneksi ke server.';
+      }
+    });
+  </script>
+</body>
+</html>
